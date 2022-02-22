@@ -1,0 +1,9 @@
+*.exe
+*.pdb
+*.log
+maps/*/texturemap.bmp
+maps/*/altmap.bin
+maps/*/normalmap.bin
+maps/*/kmap.*
+maps/*/walkmap.bin
+maps/*/walknormalmap.bin
