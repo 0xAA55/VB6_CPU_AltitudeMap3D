@@ -49,10 +49,10 @@ Declare Function GetClientRect Lib "user32" (ByVal hWnd As Long, lpRect As Rect_
 Declare Function GetParent Lib "user32" (ByVal hWnd As Long) As Long
 Declare Function GetForegroundWindow Lib "user32" () As Long
 Declare Function GetAsyncKeyState Lib "user32" (ByVal vKey As Long) As Integer
-Declare Sub CopyMemory Lib "KERNEL32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
-Declare Sub ZeroMemory Lib "KERNEL32" Alias "RtlZeroMemory" (dest As Any, ByVal numBytes As Long)
-Declare Function GetLastError Lib "KERNEL32" () As Long
-Declare Sub Sleep Lib "KERNEL32" (ByVal dwMilliseconds As Long)
+Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
+Declare Sub ZeroMemory Lib "kernel32" Alias "RtlZeroMemory" (dest As Any, ByVal numBytes As Long)
+Declare Function GetLastError Lib "kernel32" () As Long
+Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
 Type STARTUPINFO
     cb As Long
@@ -80,10 +80,10 @@ Type PROCESS_INFORMATION
     dwProcessId As Long
     dwThreadId As Long
 End Type
-Declare Function CreateProcess Lib "KERNEL32" Alias "CreateProcessW" (lpApplicationName As Any, lpCommandLine As Any, lpProcessAttributes As Any, lpThreadAttributes As Any, ByVal bInheritHandles As Long, ByVal dwCreationFlags As Long, lpEnvironment As Any, lpCurrentDriectory As Any, lpStartupInfo As STARTUPINFO, lpProcessInformation As PROCESS_INFORMATION) As Long
-Declare Function WaitForSingleObject Lib "KERNEL32" (ByVal hHandle As Long, ByVal dwMilliseconds As Long) As Long
-Declare Function GetExitCodeProcess Lib "KERNEL32" (ByVal hProcess As Long, lpExitCode As Long) As Long
-Declare Function CloseHandle Lib "KERNEL32" (ByVal hObject As Long) As Long
+Declare Function CreateProcess Lib "kernel32" Alias "CreateProcessW" (lpApplicationName As Any, lpCommandLine As Any, lpProcessAttributes As Any, lpThreadAttributes As Any, ByVal bInheritHandles As Long, ByVal dwCreationFlags As Long, lpEnvironment As Any, lpCurrentDriectory As Any, lpStartupInfo As STARTUPINFO, lpProcessInformation As PROCESS_INFORMATION) As Long
+Declare Function WaitForSingleObject Lib "kernel32" (ByVal hHandle As Long, ByVal dwMilliseconds As Long) As Long
+Declare Function GetExitCodeProcess Lib "kernel32" (ByVal hProcess As Long, lpExitCode As Long) As Long
+Declare Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As Long
 Global Const NORMAL_PRIORITY_CLASS = &H20&
 Global Const WAIT_TIMEOUT = &H102&
 Global Const WAIT_OBJECT_0 = &H0&
@@ -133,10 +133,10 @@ RGBDim = (((Color And &HFF&) * Alpha \ 255&) And &HFF&) Or (((Color And &HFF00&)
 #End If
 End Function
 
-Function RGBLerp(ByVal C1 As Long, ByVal C2 As Long, ByVal S As Single) As Long
-S = clamp(S * S * (3 - 2 * S))
+Function RGBLerp(ByVal C1 As Long, ByVal C2 As Long, ByVal s As Single) As Long
+s = clamp(s * s * (3 - 2 * s))
 Dim AVal As Long
-AVal = S * 255
+AVal = s * 255
 RGBLerp = RGBDim(C1, 255 - AVal) + RGBDim(C2, AVal)
 End Function
 
@@ -239,3 +239,9 @@ count_a = min(count_a, count)
 count_b = count - count_a
 bar_indicator = String(count_a, char_a) & String(count_b, char_b) & String(count_c, char_c)
 End Function
+
+Sub LogPrint(ByVal LogS As String, Optional ByVal LogType As String = "[INFO]")
+Open App.Path & "\runlog.log" For Append As #1
+Print #1, LogType; LogS
+Close #1
+End Sub
