@@ -498,7 +498,7 @@ If m_ScopeOpened Then
     
     Renderer_MaskBmp_Setup ScopeX, ScopeY, m_ScopeXRes, m_ScopeYRes, m_ScopeMask, 0, True
     Render_Objects
-    Renderer_RenderLandscape 0, 0, m_VoxelCanvasXRes - 1, m_VoxelCanvasYRes - 1
+    Renderer_RenderLandscape_MT 0, 0, m_VoxelCanvasXRes - 1, m_VoxelCanvasYRes - 1
     Render_Alpha_Objects
     
     Renderer_SetProjCenter ScopeXCenter, ScopeYCenter
@@ -510,7 +510,7 @@ If m_ScopeOpened Then
     Renderer_MaskBmp_Disable
 Else
     Render_Objects
-    Renderer_RenderLandscape 0, 0, m_VoxelCanvasXRes - 1, m_VoxelCanvasYRes - 1
+    Renderer_RenderLandscape_MT 0, 0, m_VoxelCanvasXRes - 1, m_VoxelCanvasYRes - 1
     Render_Alpha_Objects
 End If
 
