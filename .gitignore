@@ -1,6 +1,7 @@
 *.exe
 *.pdb
 *.log
+*.vbw
 maps/*/texturemap.bmp
 maps/*/altmap.bin
 maps/*/normalmap.bin
