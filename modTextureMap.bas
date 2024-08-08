@@ -176,7 +176,7 @@ Erase m_TexPackedMap
 End Sub
 
 Function TextureMap_GetVal(ByVal X As Single, ByVal Y As Single) As vec4_t
-TextureMap_GetVal = m_TextureMap(Val(X * m_TextureSampScale) And m_TexMap_MaxX, Val(Y * m_TextureSampScale) And m_TexMap_MaxY)
+TextureMap_GetVal = m_TextureMap(CLng(X * m_TextureSampScale) And m_TexMap_MaxX, CLng(Y * m_TextureSampScale) And m_TexMap_MaxY)
 End Function
 
 Function TextureMap_GetVal_Interpolated(ByVal X As Single, ByVal Y As Single) As vec4_t
