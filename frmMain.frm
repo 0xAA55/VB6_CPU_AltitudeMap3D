@@ -115,6 +115,7 @@ If g_Arg_HighRes Then
     VYRes = VYRes * 2
 End If
 
+MT_Init
 Scene_Init picCanvas, g_Cfg_Render_XRes, g_Cfg_Render_YRes, App.Path & "\maps\" & CStr(Int(Rnd * 8) + 1), VXRes, VYRes
 
 GetKeyState vbKeyEscape
@@ -129,8 +130,10 @@ Do
     picCanvas.PSet (0, 0)
     picCanvas.Print Tag
     picCanvas.Refresh
-    If GetKeyState(vbKeyEscape) Then Unload Me
+    If GetKeyState(vbKeyEscape) Then Exit Do
 Loop While DoEvents
+
+Unload Me
 End Sub
 
 Private Sub Form_MouseDown(Button As Integer, Shift As Integer, X As Single, Y As Single)
@@ -164,6 +167,7 @@ End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
 Scene_Cleanup
+MT_Terminate
 End Sub
 
 Public Sub OnStartProgress(ProgressName As String)
