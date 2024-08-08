@@ -10,12 +10,18 @@ Private Declare Function UserDllMain Lib "msvbvm60" (OutInstance As Long, ByVal 
 Private Declare Function CreateIExprSrvObj Lib "msvbvm60" (Optional ByVal Reserved As Long, Optional ByVal Size As Long = 4, Optional ByVal Fail As Boolean) As IUnknown
 Private Declare Function VBDllGetClassObject Lib "msvbvm60" (lpHInstDll As Long, ByVal Reserved As Long, lpVBHeader As Any, CLSID As Any, IID As Any, lpOutObject As IUnknown) As Long
 
-Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
+Declare Sub Sleep Lib "KERNEL32" (ByVal dwMilliseconds As Long)
 Declare Sub GetMem4 Lib "msvbvm60" (ByVal Addr As Long, Target As Any)
-Declare Function CreateThread Lib "kernel32" (lpThreadAttributes As Any, dwStackSize As Long, ByVal lpStartAddress As Long, ByVal lpParameter As Long, ByVal dwCreationFlags As Long, lpThreadId As Long) As Long
-Declare Function CloseHandle Lib "kernel32" (ByVal hObject As Long) As Long
-Declare Function GetExitCodeThread Lib "kernel32" (ByVal hThread As Long, lpExitCode As Long) As Long
-Declare Function WaitForMultipleObjects Lib "kernel32" (ByVal nCount As Long, lpHandles As Long, ByVal bWaitAll As Long, ByVal dwMilliseconds As Long) As Long
+Declare Function CreateThread Lib "KERNEL32" (lpThreadAttributes As Any, ByVal dwStackSize As Long, ByVal lpStartAddress As Long, ByVal lpParameter As Long, ByVal dwCreationFlags As Long, lpThreadId As Long) As Long
+Declare Function CloseHandle Lib "KERNEL32" (ByVal hObject As Long) As Long
+Declare Function GetExitCodeThread Lib "KERNEL32" (ByVal hThread As Long, lpExitCode As Long) As Long
+Declare Function WaitForMultipleObjects Lib "KERNEL32" (ByVal nCount As Long, lpHandles As Long, ByVal bWaitAll As Long, ByVal dwMilliseconds As Long) As Long
+Declare Sub ExitThread Lib "KERNEL32" (ByVal dwExitCode As Long)
+Declare Function InterlockedExchange Lib "KERNEL32" (Target As Long, ByVal Value As Long) As Long
+Declare Function InterlockedIncrement Lib "KERNEL32" (lpAddend As Long) As Long
+Declare Function InterlockedDecrement Lib "KERNEL32" (lpAddend As Long) As Long
+Declare Function timeBeginPeriod Lib "winmm.dll" (ByVal uPeriod As Long) As Long
+Declare Function timeEndPeriod Lib "winmm.dll" (ByVal uPeriod As Long) As Long
 
 Private MTInit As Long
 Private MTInst As Long
@@ -40,7 +46,7 @@ frmMain.Show
 MTInit = 1
 End Sub
 
-Sub StartNewThread(ByVal ThreadEntry As Long, Optional ByVal ThreadParam As Long, Optional Out_ThreadId As Long)
+Private Sub StartNewThread(ByVal ThreadEntry As Long, Optional ByVal ThreadParam As Long, Optional Out_ThreadId As Long)
 CloseHandle CreateThread(ByVal 0, 0, ThreadEntry, ThreadParam, 0, Out_ThreadId)
 End Sub
 
