@@ -505,7 +505,7 @@ If m_ScopeOpened Then
     Renderer_SetCamera m_CamPos, m_CamOrient, m_ScopeBaseFov / m_ScopeMult
     Renderer_MaskBmp_Invert
     Render_Objects
-    Renderer_RenderLandscape ScopeX, ScopeY, ScopeX + m_ScopeXRes, ScopeY + m_ScopeYRes, 32, m_ScopeMult * 256
+    Renderer_RenderLandscape_MT2 ScopeX, ScopeY, ScopeX + m_ScopeXRes, ScopeY + m_ScopeYRes
     Render_Alpha_Objects
     Renderer_MaskBmp_Disable
 Else
