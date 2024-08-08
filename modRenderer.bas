@@ -559,6 +559,14 @@ End If
 
 End Sub
 
+Sub Renderer_RenderLandscape_ThreadFunc(ByVal I As Long, ByVal P2 As Long, ByVal P3 As Long, ByVal P4 As Long)
+Renderer_RenderLandscape P3, P2 + I, P4, P2 + I
+End Sub
+
+Sub Renderer_RenderLandscape_MT(ByVal X1 As Long, ByVal Y1 As Long, ByVal X2 As Long, ByVal Y2 As Long)
+MT_RunForLoop AddressOf Renderer_RenderLandscape_ThreadFunc, Y2 + 1 - Y1, Y1, X1, X2
+End Sub
+
 Sub Renderer_Present(Optional Target As PictureBox = Nothing)
 Dim RT As PictureBox
 If Target Is Nothing Then
