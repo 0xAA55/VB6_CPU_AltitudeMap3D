@@ -56,7 +56,7 @@ Do
             Sleep 0
         End If
     Else
-        Sleep 1
+        Sleep 0
     End If
 Loop While MT_Status >= 0
 
