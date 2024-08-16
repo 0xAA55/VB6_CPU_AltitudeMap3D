@@ -212,7 +212,7 @@ End Function
 
 #Else 'DoUnpack
 Function TextureMap_GetVal(ByVal X As Single, ByVal Y As Single) As vec4_t
-TextureMap_GetVal = vec4_from_rgb(m_TexPackedMap(Val(X * m_TextureSampScale) And m_TexMap_MaxX, Val(Y * m_TextureSampScale) And m_TexMap_MaxY))
+TextureMap_GetVal = vec4_from_rgb(m_TexPackedMap(CLng(X * m_TextureSampScale) And m_TexMap_MaxX, CLng(Y * m_TextureSampScale) And m_TexMap_MaxY))
 End Function
 
 Function TextureMap_GetVal_Interpolated(ByVal X As Single, ByVal Y As Single) As vec4_t
