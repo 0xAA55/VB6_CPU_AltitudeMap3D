@@ -1,6 +1,6 @@
 Type=Exe
 Form=frmMain.frm
-Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\Windows\SysWOW64\stdole2.tlb#OLE Automation
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\Windows\System32\stdole2.tlb#OLE Automation
 Module=modAltMap; modAltMap.bas
 Module=modMisc; modMisc.bas
 Module=modScene; modScene.bas
