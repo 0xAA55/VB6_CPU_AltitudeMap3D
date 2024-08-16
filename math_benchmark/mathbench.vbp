@@ -1,6 +1,6 @@
 Type=Exe
 Form=frmMain.frm
-Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\Windows\SysWOW64\stdole2.tlb#OLE Automation
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\Windows\System32\stdole2.tlb#OLE Automation
 Module=modMath; ..\modMath.bas
 Class=clsTimer; ..\clsTimer.cls
 Module=modMisc; ..\modMisc.bas
@@ -9,6 +9,7 @@ Startup="frmMain"
 HelpFile=""
 Title="mathbench"
 ExeName32="mathbench.exe"
+Path32=".."
 Command32=""
 Name="mathbench"
 HelpContextID="0"
