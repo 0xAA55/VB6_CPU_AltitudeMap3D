@@ -1,0 +1,5 @@
+VBGROUP 5.0
+StartupProject=AltitudeMap.vbp
+Project=gpukmap\gpukmap.vbp
+Project=kmap_preview\kprev.vbp
+Project=math_benchmark\mathbench.vbp
