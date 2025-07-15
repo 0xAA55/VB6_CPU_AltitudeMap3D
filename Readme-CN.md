@@ -1,5 +1,9 @@
 # 使用 Visual Basic 6.0 编写的纯 CPU 实时光追渲染地形图
 
+## 语言 Language
+
+简体中文 | [English](Readme.md)
+
 ## 介绍
 
 Raymarch 光追技术是一种对每个像素，计算出视线方向，然后进行有限次数的循环步进方式去计算视线与 **置换纹理** （displacement texture）所表达的高度图的相交点，在图形学上用于简易光线追踪方案。

@@ -2,6 +2,10 @@
 
 A real-time CPU-based ray-traced terrain map renderer written in Visual Basic 6.0
 
+## 语言 Language
+
+[简体中文](Readme-CN.md) | English
+
 ## Introduction
 Raymarch ray-tracing technology is a method that, for each pixel, calculates the line-of-sight direction and then performs a limited number of iterative steps to find the intersection point between the line of sight and the height map represented by the displacement texture. It is used in computer graphics as a simplified ray-tracing solution.
 
