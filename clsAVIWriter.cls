@@ -127,7 +127,7 @@ If VideoFormatPtr > 0 And VideoFormatSize > 0 Then
     m_Height = m_VideoFormat.BMIF.biHeight
     If m_Height < 0 Then m_Height = -m_Height
     Dim Pitch As Long
-    Pitch = ((m_Width * 24 - 1) \ 32) * 4
+    Pitch = ((m_Width * 24 - 1) \ 32 + 1) * 4
     m_FrameSize = Pitch * m_Height
     m_VideoFormatIsSet = True
 Else
