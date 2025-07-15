@@ -80,7 +80,6 @@ Private m_AudioWritten As Long
 Private m_IsBegun As Boolean
 Private m_CaptureSourceControl As Long
 Private m_CaptureSourceHDC As Long
-Private m_CaptureSourceHDC_ShouldRelease As Boolean
 Private m_CapturerHDC As Long
 Private m_CapturerFrameBufferPtr As Long
 
@@ -154,10 +153,6 @@ If m_VideoFormatIsSet = False Then Err.Raise 5, "SetCaptureSource()", "Must call
 
 If hWnd = 0 Then
     '调用者传递 hWnd = 0 意思是想要清除捕获来源。
-    If m_CaptureSourceControl <> 0 And m_CaptureSourceHDC_ShouldRelease = True Then
-        ReleaseDC m_CaptureSourceControl, m_CaptureSourceHDC
-        m_CaptureSourceHDC_ShouldRelease = False
-    End If
     m_CaptureSourceControl = 0
     m_CaptureSourceHDC = 0
     If m_CapturerHDC Then
@@ -172,22 +167,13 @@ m_CaptureSourceControl = hWnd
 
 Dim CaptureSourceGetDC As Long
 CaptureSourceGetDC = GetDC(hWnd)
-If hDC Then
-    m_CaptureSourceHDC_ShouldRelease = False
-    m_CaptureSourceHDC = hDC
-Else '调用者提供的 HDC 是零，那么我们长期持有 CaptureSourceGetDC
-    m_CaptureSourceHDC_ShouldRelease = True
-    m_CaptureSourceHDC = CaptureSourceGetDC
-End If
+m_CaptureSourceHDC = hDC
 
 If m_CapturerHDC = 0 Then m_CapturerHDC = CreateCompatibleDC(CaptureSourceGetDC)
 
 Dim CaptureFrameBufferBitmap As Long
 CaptureFrameBufferBitmap = CreateDIBSection(CaptureSourceGetDC, m_VideoFormat, 0, m_CapturerFrameBufferPtr, 0, 0)
-If hDC Then
-    'CaptureSourceGetDC 是重复获取的 HDC，需要释放
-    ReleaseDC hWnd, CaptureSourceGetDC
-End If
+ReleaseDC hWnd, CaptureSourceGetDC
 
 SelectObject m_CapturerHDC, CaptureFrameBufferBitmap
 DeleteObject CaptureFrameBufferBitmap
@@ -315,14 +301,23 @@ m_IsBegun = False
 End Sub
 
 Public Sub WriteVideo(Optional ByVal VideoDataPtr As Long = 0)
+Dim DoCapture As Boolean
+
 If VideoDataPtr = 0 Then
     VideoDataPtr = m_CapturerFrameBufferPtr
+    DoCapture = True
     If VideoDataPtr = 0 Then Err.Raise 5, "WriteVideo()", "Must give a valid video data pointer or setup a capture source control"
+End If
+
+If DoCapture Then
+    Dim SourceHDC As Long
+    If m_CaptureSourceHDC Then SourceHDC = m_CaptureSourceHDC Else SourceHDC = GetDC(m_CaptureSourceControl)
+    BitBlt m_CapturerHDC, 0, 0, m_Width, m_Height, SourceHDC, 0, 0, vbSrcCopy
+    If m_CaptureSourceHDC = 0 Then ReleaseDC m_CaptureSourceControl, SourceHDC
 End If
 
 Dim VideoData() As Byte
 ReDim VideoData(m_FrameSize - 1)
-
 CopyMemory VideoData(0), ByVal VideoDataPtr, m_FrameSize
 
 Put #m_FileNumber, , "00dc"
@@ -369,8 +364,5 @@ End Property
 
 Private Sub Class_Terminate()
 If m_IsBegun Then EndWrite
-If m_CaptureSourceControl <> 0 And m_CaptureSourceHDC_ShouldRelease = True Then
-    ReleaseDC m_CaptureSourceControl, m_CaptureSourceHDC
-End If
 If m_CapturerHDC Then DeleteDC m_CapturerHDC
 End Sub
