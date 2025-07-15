@@ -19,6 +19,7 @@ Module=modConfig; modConfig.bas
 Module=modBmpFile; modBmpFile.bas
 Module=modMTMain; modMTMain.bas
 Module=modMTPool; modMTPool.bas
+Class=clsAVIWriter; clsAVIWriter.cls
 IconForm="frmMain"
 Startup="Sub Main"
 HelpFile=""
