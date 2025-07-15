@@ -98,6 +98,22 @@ If m_IsBegun Then Err.Raise 5, "Property Let FrameRate()", "Must set framerate b
 m_FrameRate = NewFrameRate
 End Property
 
+Public Property Get VideoWidth() As Long
+VideoWidth = m_Width
+End Property
+
+Public Property Get VideoHeight() As Long
+VideoHeight = m_Height
+End Property
+
+Public Property Get CaptureSourceHWND() As Long
+CaptureSourceHWND = m_CaptureSourceControl
+End Property
+
+Public Property Get CaptureSourceHDC() As Long
+CaptureSourceHDC = m_CaptureSourceHDC
+End Property
+
 Public Sub SetVideoFormat(ByVal VideoFormatPtr As Long, ByVal VideoFormatSize As Long)
 If VideoFormatSize > Len(m_VideoFormat) Then Err.Raise 5, "SetVideoFormat()", "`VideoFormatSize` is too long"
 VideoFormatSize = min(VideoFormatSize, Len(m_VideoFormat))
