@@ -37,6 +37,15 @@ Type BitmapInfoHeader_t
     biClrImportant As Long
 End Type
 
+Type WaveFormatEx_t
+    FormatTag As Integer
+    Channels As Integer
+    SamplesPerSec As Long
+    AvgBytesPerSec As Long
+    BlockAlign As Integer
+    BitsPerSample As Integer
+End Type
+
 Declare Function StretchDIBits Lib "gdi32" (ByVal hDC As Long, ByVal X As Long, ByVal Y As Long, ByVal dX As Long, ByVal dY As Long, ByVal SrcX As Long, ByVal SrcY As Long, ByVal wSrcWidth As Long, ByVal wSrcHeight As Long, lpBits As Any, lpBitsInfo As Any, ByVal wUsage As Long, ByVal dwRop As Long) As Long
 Global Const BI_bitfields = 3&
 
