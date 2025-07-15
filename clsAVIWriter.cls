@@ -267,13 +267,13 @@ Dim STRH_Audio As AVIStreamHeader_t
 
 AVIH.FourCC = &H68697661
 AVIH.cb = Len(AVIH) - 8
-AVIH.Width = m_Width
-AVIH.Height = m_Height
 AVIH.MicroSecPerFrame = 1000000 \ m_FrameRate
-AVIH.MaxBytesPerSec = m_ramesize * m_FrameRate + m_AudioFormat.AvgBytesPerSec
+AVIH.MaxBytesPerSec = m_FrameSize * m_FrameRate + m_AudioFormat.AvgBytesPerSec
 AVIH.Flags = IIf(m_AudioFormatIsSet, &H100&, 0)
 AVIH.Streams = IIf(m_AudioFormatIsSet, 2, 1)
 AVIH.SuggestedBufferSize = m_FrameSize
+AVIH.Width = m_Width
+AVIH.Height = m_Height
 
 STRH_Video.FourCC = &H73646976
 STRH_Video.InitialFrames = AVIH.InitialFrames
