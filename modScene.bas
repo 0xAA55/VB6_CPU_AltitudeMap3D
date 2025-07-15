@@ -16,6 +16,12 @@ Public m_CamOrient As mat4x4_t
 Public m_CamPosOrient As mat4x4_t
 Public Const m_CamFovY As Single = PI * 0.5
 
+Public m_Recorder As clsAVIWriter
+Public m_RecordStartTime As Double
+Public m_Recording As Boolean
+Public m_RecordKeyDown As Boolean
+Public Const m_RecordingFPS As Double = 30
+
 Private Const m_MouseSensitivity As Single = 1 / (480 * m_CamFovY * 0.5)
 Private Const m_CamMinPitch As Single = -PI * 0.5
 Private Const m_CamMaxPitch As Single = PI * 0.5
@@ -446,8 +452,53 @@ g_TimeUpdate = CurTime
 If g_TimeDelta > 1 Then g_TimeDelta = 1
 End Sub
 
+Private Sub StartRecord(Target As PictureBox)
+If m_Recording = False Then
+    Dim RecordFormat As BitmapInfoHeader_t
+    RecordFormat.biSize = 40
+    RecordFormat.biWidth = g_Cfg_Render_XRes
+    RecordFormat.biHeight = g_Cfg_Render_YRes
+    RecordFormat.biPlanes = 1
+    RecordFormat.biBitCount = 24
+
+    Dim Pitch As Long
+    Pitch = ((g_Cfg_Render_XRes * RecordFormat.biBitCount - 1) \ 32 + 1) * 4
+    RecordFormat.biSizeImage = Pitch * g_Cfg_Render_YRes
+
+    Set m_Recorder = New clsAVIWriter
+    m_Recorder.SetVideoFormat VarPtr(RecordFormat), Len(RecordFormat)
+    m_Recorder.FrameRate = m_RecordingFPS
+    m_Recorder.SetCaptureSource Target.hWnd, 0
+    m_Recorder.BeginWrite App.Path & "\record.avi"
+
+    m_RecordStartTime = g_TimeUpdate
+    m_Recording = True
+End If
+End Sub
+
+Private Sub EndRecord()
+If m_Recording Then
+    m_Recorder.EndWrite
+    Set m_Recorder = Nothing
+    m_Recording = False
+End If
+End Sub
+
 Sub Scene_FrameMove()
 'UpdateTimer
+
+If frmMain.GetKeyState(vbKeyP) Then
+    If m_RecordKeyDown = False Then
+        m_RecordKeyDown = True
+        If m_Recording = False Then
+            StartRecord frmMain.picCanvas
+        Else
+            EndRecord
+        End If
+    End If
+Else
+    m_RecordKeyDown = False
+End If
 
 ProcMouseInput
 ProcWalking
@@ -518,6 +569,13 @@ End Sub
 
 Sub Scene_Present(Target As PictureBox)
 Renderer_Present Target
+
+If m_Recording Then
+    Const RecordInterval As Double = 1# / m_RecordingFPS
+    If g_TimeUpdate - m_RecordStartTime >= m_Recorder.VideoTimestamp + RecordInterval Then
+        m_Recorder.WriteVideo
+    End If
+End If
 End Sub
 
 Function Scene_FrameMove_CheckTick(Optional ByVal TickLen As Double = 1 / 30, Optional ByVal MaxTickLen As Double = 1) As Boolean
